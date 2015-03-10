@@ -3,14 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<title>Compta</title>
-	
+	<link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 </head>
 <body>
-<h1>test</h1>
-    
-    Hello <?= $username ?>
+ 
+    <header>
+        Hello <?= $username ?>
+        <a href="<?= site_url('webapp/logout') ?>">Se déconnecter</a>
+    </header>
 
-    <a href="<?= site_url('webapp/logout') ?>">Se déconnecter</a>
+    
     
     <div class="ng-view"></div>
 

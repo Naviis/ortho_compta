@@ -1,35 +1,53 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Api extends CI_Controller {
+    
+    private $res = null;
         
     public function __construct(){
         parent::__construct();
+        
+        $this->load->model('response');
+        $this->res = new Response();
     }
     
     /*---------------------------*\
         $PATIENT
     \*---------------------------*/
     
-    public function get_patient($id=null){
+    public function patients($id = null){
+        
+        $table_patient = 'patient';   
+        $table_session = 'session';   
+        
+        switch($this->input->server('REQUEST_METHOD')){
+            
+            case 'GET':
+                
+                if( !is_null($id) ){
+                    
+                    $this->db->select('patient.id,patient.lastname,patient.firstname,patient.note,patient.clear,session.id as sessionid, session.type_AMO, session.holder,session.date,session.bills');
+                    $this->db->from('patient');
+                    $this->db->join('session', 'session.patient = patient.id','left');
 
-        $table = 'patient';
-        
-        $this->publish($res = $this->db->get($table)->result()); 
+                    $query = $this->db->get();
+                    var_dump($query->result());
+                    $this->publish($res = $query->result(),'success','Patient'); 
+                }else{
+                    $this->publish($res = $this->db->get($table)->result(),'success','Patients'); 
+                }
+
+            break;
+            
+        }
     }
     
-    /*---------------------------*\
-        $TYPE_AMO
-    \*---------------------------*/
-    
-    public function get_type_amo(){
+    private function publish($data,$status,$type){
         
-        $table = 'type_amo';
+        $this->res->set_status($status);
+        $this->res->set_result($data);
+        $this->res->send();
         
-        $this->publish($res = $this->db->get($table)->result()); 
-    }
-    
-    private function publish($data){
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
    
 }
