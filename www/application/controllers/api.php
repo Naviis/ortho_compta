@@ -127,6 +127,7 @@ class Api extends CI_Controller {
                     array_push($sessions,$current_session);
 
                 }else{
+
                     if( !is_null($line->type) ){
                         $current_paiement = new stdClass();
                         $current_paiement->type = $line->type;
@@ -160,9 +161,8 @@ class Api extends CI_Controller {
         }
         
     }
-    
-    private function publish($data,$status = 'success'){
-        
+
+    private function publish($data,$status = 'success'){        
         $this->res->set_status($status);
         $this->res->set_result($data);
         $this->res->send();
