@@ -84,7 +84,62 @@ class Api extends CI_Controller {
     public function get_patient_sessions($id=null){
         
         if( !is_null($id) ){
+            $this->db->select('session.id as session_id, 
+                                type_AMO.value AS amo,
+                                holder.name AS holder,
+                                holder.percentage,
+                                paiement_type.type,
+                                session_paiement.value
+                                ');
+            $this->db->from('patient');
+            $this->db->join('session', 'session.patient = patient.id','left');
+            $this->db->join('type_AMO', 'session.type_AMO = type_AMO.id','left');
+            $this->db->join('holder', 'session.holder = holder.id','left');
+            $this->db->join('session_paiement', 'session_paiement.session = session.id','left');
+            $this->db->join('paiement_type', 'session_paiement.type_paiement = paiement_type.id','left');
+            $this->db->where(array('session.patient'=>$id));
             
+            $res = $this->db->get()->result();
+            
+            $sessions = array();
+            $current_session = null;
+            
+            foreach( $res as $line ){
+                $c_id = $line->session_id;
+                
+                if( is_null($current_session) || ( !is_null($current_session) && $current_session->session_id != $c_id) ){
+
+                    $current_session = new stdClass();
+                    $current_session->session_id = (int)$c_id;
+                    $current_session->amo = $line->amo;
+                    $current_session->holder = $line->holder;
+                    $current_session->percentage = (float)$line->percentage;
+                    $current_session->paiements = array();
+
+                    if( !is_null($line->type) ){
+                        $current_paiement = new stdClass();
+                        $current_paiement->type = $line->type;
+                        $current_paiement->value = (float)$line->value;
+
+                        array_push($current_session->paiements,$current_paiement);
+                    }
+
+                    array_push($sessions,$current_session);
+
+                }else{
+                    if( !is_null($line->type) ){
+                        $current_paiement = new stdClass();
+                        $current_paiement->type = $line->type;
+                        $current_paiement->value = (float)$line->value;
+
+                        array_push($current_session->paiements,$current_paiement);
+                    }
+                }
+
+                
+            }// end foreach
+            
+            var_dump($sessions);
         }
         
     }
