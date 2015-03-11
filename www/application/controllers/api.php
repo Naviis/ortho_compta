@@ -21,9 +21,10 @@ class Api extends CI_Controller {
             
             case 'GET':
                 
+                // One patient
                 if( !is_null($id) ){
                     
-                    // One patient
+                    
                     
                 // Multiple patients
                 }else{
@@ -50,18 +51,19 @@ class Api extends CI_Controller {
                         if( is_null($current_patient) || ( !is_null($current_patient) && $current_patient->id != $c_id) ){
                             
                             $current_patient = new stdClass();
-                            $current_patient->id = $line->id;
+                            $current_patient->id = (int)$line->id;
                             $current_patient->lastname = $line->lastname;
                             $current_patient->firstname = $line->firstname;
                             $current_patient->note = $line->note;
-                            $current_patient->clear = $line->clear;
+                            $current_patient->clear = (int)$line->clear;
                             $current_patient->bills = $line->bills;
+                            $current_patient->total = 0;
                             $current_patient->sessions = array();
                             
                             if( !is_null($line->session_id) ){
                                 $current_session = new stdClass();
-                                $current_session->id = $line->session_id;
-                                $current_session->amo = $line->amo;
+                                $current_session->id = (int)$line->session_id;
+                                $current_session->amo = (float)$line->amo;
                                 
                                 array_push($current_patient->sessions,$current_session);
                             }
@@ -71,17 +73,27 @@ class Api extends CI_Controller {
                         }else{
                             if( !is_null($line->session_id) ){
                                 $current_session = new stdClass();
-                                $current_session->id = $line->session_id;
-                                $current_session->amo = $line->amo;
+                                $current_session->id = (int)$line->session_id;
+                                $current_session->amo = (float)$line->amo;
                                 
                                 array_push($current_patient->sessions,$current_session);
                             }
                         }
+                        
+                        // Total
+                        
+                        foreach( $current_patient->sessions as $session ){
+                            $current_patient->total += ($session->amo*AMO_VALUE);
+                        }
+                        
                     } //end foreach
-                    var_dump($patients);
+                    
+                    
+                    $this->publish($patients);
+                    
                 }// end if id
 
-            break;
+            break; // End get
             
         }
     }

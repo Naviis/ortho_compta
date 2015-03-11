@@ -1,7 +1,9 @@
-
-<ul>
-    <li ng-repeat="patient in patients">
-        <h2>{{patient.firstname}} {{patient.lastname}}</h2>
-        
-    </li>
-</ul>
+<div class="patientsList_block" ng-repeat="patient in patients">
+    <ul>
+        <li>{{patient.firstname}} {{patient.lastname}}</li>
+        <li><strong>Total :</strong> {{patient.total}}</li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
