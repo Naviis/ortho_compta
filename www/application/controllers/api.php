@@ -84,19 +84,25 @@ class Api extends CI_Controller {
     public function get_patient_sessions($id=null){
         
         if( !is_null($id) ){
+            
+            $this->config->load('myConfig');
+            
+            // Paiement types
+            $paiment_types = $this->config->item('paiement_types');
+            
+            // Sessions
             $this->db->select('session.id as session_id, 
                                 type_AMO.value AS amo,
                                 holder.name AS holder,
                                 holder.percentage,
-                                paiement_type.type,
-                                session_paiement.value
+                                paiements.value,
+                                paiements.type_paiement AS type
                                 ');
             $this->db->from('patient');
             $this->db->join('session', 'session.patient = patient.id','left');
             $this->db->join('type_AMO', 'session.type_AMO = type_AMO.id','left');
             $this->db->join('holder', 'session.holder = holder.id','left');
-            $this->db->join('session_paiement', 'session_paiement.session = session.id','left');
-            $this->db->join('paiement_type', 'session_paiement.type_paiement = paiement_type.id','left');
+            $this->db->join('paiements', 'paiements.session = session.id','left');
             $this->db->where(array('session.patient'=>$id));
             
             $res = $this->db->get()->result();
@@ -115,13 +121,13 @@ class Api extends CI_Controller {
                     $current_session->holder = $line->holder;
                     $current_session->percentage = (float)$line->percentage;
                     $current_session->paiements = array();
+                    
+                    foreach( $paiment_types as $key => $t ){
+                        $current_session->paiements[$key] = 0;
+                    }
 
                     if( !is_null($line->type) ){
-                        $current_paiement = new stdClass();
-                        $current_paiement->type = $line->type;
-                        $current_paiement->value = (float)$line->value;
-
-                        array_push($current_session->paiements,$current_paiement);
+                        $current_session->paiements[(int)$line->type] = (float)$line->value;
                     }
 
                     array_push($sessions,$current_session);
@@ -129,18 +135,14 @@ class Api extends CI_Controller {
                 }else{
 
                     if( !is_null($line->type) ){
-                        $current_paiement = new stdClass();
-                        $current_paiement->type = $line->type;
-                        $current_paiement->value = (float)$line->value;
-
-                        array_push($current_session->paiements,$current_paiement);
+                        $current_session->paiements[(int)$line->type] = (float)$line->value;
                     }
                 }
 
                 
             }// end foreach
             
-            var_dump($sessions);
+            $this->publish($sessions);
         }
         
     }

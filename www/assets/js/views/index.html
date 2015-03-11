@@ -7,5 +7,8 @@
             <li ng-class="{active:patient.clear}" ng-click="set_clear(patient.id)"><span class="icon-check"></span></li>
             <li ng-click="get_sessions(patient.id)"><span class="icon-plus"></span></li>
         </ul>
+        <div ng-show="patient.sessions_details">
+            {{patient.sessions_details|json}}
+        </div>
     </div>
 </div>

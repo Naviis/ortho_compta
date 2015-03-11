@@ -12,8 +12,6 @@
         <a href="<?= site_url('webapp/logout') ?>">Se déconnecter</a>
     </header>
 
-    
-    
     <div class="mainContent" ng-view></div>
 
     <script src="<?= base_url('assets/js/lib/angular.min.js') ?>"></script>

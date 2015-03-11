@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/perso/ortho_compta/www/';
+$config['base_url']	= 'http://ortho_compta/';
 
 /*
 |--------------------------------------------------------------------------
@@ -360,3 +360,4 @@ $config['proxy_ips'] = '';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
+

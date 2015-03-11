@@ -13,7 +13,12 @@ app.controller('PatientsListCtrl',function($scope,PatientService){
     $scope.get_sessions = function(id){
         PatientService.get_patient_sessions(id).success(function(res){
             if( res.status == 'success' ){
-                console.log(res);
+                for( var i= 0; i < $scope.patients.length; i++){
+                    var p = $scope.patients[i];
+                    if( p.id == id ){
+                        p.sessions_details = res.results;
+                    }
+                }
             } 
         });
     };
