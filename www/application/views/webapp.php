@@ -14,7 +14,7 @@
 
     
     
-    <div class="ng-view"></div>
+    <div class="mainContent" ng-view></div>
 
     <script src="<?= base_url('assets/js/lib/angular.min.js') ?>"></script>
     <script src="<?= base_url('assets/js/lib/angular.route.min.js') ?>"></script>

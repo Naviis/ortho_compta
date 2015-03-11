@@ -1,9 +1,11 @@
-<div class="patientsList_block" ng-repeat="patient in patients">
-    <ul>
-        <li>{{patient.firstname}} {{patient.lastname}}</li>
-        <li><strong>Total :</strong> {{patient.total}}</li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
+<div class="wpr">
+    <div class="patientsList_block" ng-repeat="patient in patients">
+        <ul>
+            <li>{{patient.firstname}} {{patient.lastname}}</li>
+            <li><strong>Total :</strong> {{patient.total}}</li>
+            <li><strong>N° Facture(s) :</strong> {{patient.bills}}</li>
+            <li ng-class="{active:patient.clear}" ng-click="set_clear(patient.id)"><span class="icon-check"></span></li>
+            <li ng-click="get_sessions(patient.id)"><span class="icon-plus"></span></li>
+        </ul>
+    </div>
 </div>
