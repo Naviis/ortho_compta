@@ -1,13 +1,13 @@
 <div class="wpr">
     <div class="patientsList_block" ng-repeat="patient in patients">
-        <ul>
+        <ul ng-class="{active:patient.active}">
             <li>{{patient.firstname}} {{patient.lastname}}</li>
             <li><strong>Total :</strong> {{patient.total}}</li>
             <li><strong>N° Facture(s) :</strong> {{patient.bills}}</li>
             <li ng-class="{active:patient.clear}" ng-click="set_clear(patient.id)"><span class="icon-check"></span></li>
-            <li ng-click="get_sessions(patient.id)"><span class="icon-plus"></span></li>
+            <li ng-click="toggle_sessions(patient.id)"><span class="icon-plus"></span></li>
         </ul>
-        <div ng-show="patient.sessions_details">
+        <div class="patientsList_sessions" ng-show="patient.active">
             {{patient.sessions_details|json}}
         </div>
     </div>

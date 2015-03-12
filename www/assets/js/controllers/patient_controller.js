@@ -10,17 +10,24 @@ app.controller('PatientsListCtrl',function($scope,PatientService){
     });
     
     // get patient'ssessions
-    $scope.get_sessions = function(id){
-        PatientService.get_patient_sessions(id).success(function(res){
-            if( res.status == 'success' ){
-                for( var i= 0; i < $scope.patients.length; i++){
-                    var p = $scope.patients[i];
-                    if( p.id == id ){
-                        p.sessions_details = res.results;
-                    }
-                }
-            } 
-        });
+    $scope.toggle_sessions = function(id){
+        
+        var p = getPatient(id);
+        if( p !== false ){
+            PatientService.get_patient_sessions(id).success(function(res){
+                if( res.status == 'success' ){
+                    p.sessions_details = res.results;
+                } 
+            }); 
+        }
+ 
+        
+        for( var i= 0; i < $scope.patients.length; i++){
+            var p = $scope.patients[i];
+            if( p.id == id ){
+               p.active = !p.active; 
+            }
+        }
     };
     
     // Change clear
@@ -35,5 +42,16 @@ app.controller('PatientsListCtrl',function($scope,PatientService){
         }
         
     };
+    
+    function getPatient(id){
+        for( var i= 0; i < $scope.patients.length; i++){
+            var p = $scope.patients[i];
+            if( p.id == id ){
+               return p;
+            }
+        }
+        
+        return false;
+    }
     
 });

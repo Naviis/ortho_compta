@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://ortho_compta/';
+$config['base_url']	= 'http://localhost/perso/ortho_compta/www/';
 
 /*
 |--------------------------------------------------------------------------
