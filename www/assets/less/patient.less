@@ -1,7 +1,7 @@
 .patientsList_block{
     margin-bottom: 20px;
 
-    ul{
+    > ul{
         position: relative;
         z-index: 1;
         display: table;
@@ -25,51 +25,51 @@
         &.active li:nth-child(5) span:before{
             content: '\e115';
         }
-    }
-    
-    li{
-        display: table-cell;
-        vertical-align: middle;
-        padding: 15px;
-        width: 30%;
         
-        border-right: 1px solid @c_borders;
-        
-        .transition;
-        
-        &:nth-child(4), &:nth-child(5){
-            width: 5%;
-            
-            background-color: @c_l_bg;
-            text-align: center;
-            
-            cursor: pointer;
-            
-            &:hover{
-                background-color: @c_main;
-                color: #fff;
-            }
-        }
-        
-        &:nth-child(4){
-            
-            background-color: fadeOut(@c_error,20%);
-            
-            &:hover{
-                background-color: @c_error;
-            }
-            
-            &.active{
-                background-color: fadeOut(@c_success,20%);
+        li{
+            display: table-cell;
+            vertical-align: middle;
+            padding: 15px;
+            width: 30%;
+
+            border-right: 1px solid @c_borders;
+
+            .transition;
+
+            &:nth-child(4), &:nth-child(5){
+                width: 5%;
+
+                background-color: @c_l_bg;
+                text-align: center;
+
+                cursor: pointer;
 
                 &:hover{
-                    background-color: @c_success;
+                    background-color: @c_main;
+                    color: #fff;
                 }
             }
-        }
-        
-        span{
-            display: block;
+
+            &:nth-child(4){
+
+                background-color: fadeOut(@c_error,20%);
+
+                &:hover{
+                    background-color: @c_error;
+                }
+
+                &.active{
+                    background-color: fadeOut(@c_success,20%);
+
+                    &:hover{
+                        background-color: @c_success;
+                    }
+                }
+            }
+
+            span{
+                display: block;
+            }
         }
     }
 }
@@ -83,4 +83,11 @@
         background-color: #fff;
         box-shadow: 0 0 2px rgba(0,0,0,.2), 
                 0 2px 2px rgba(0,0,0,.2);
+        
+        ul{
+            display: table;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
     }

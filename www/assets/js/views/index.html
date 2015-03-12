@@ -8,7 +8,18 @@
             <li ng-click="toggle_sessions(patient.id)"><span class="icon-plus"></span></li>
         </ul>
         <div class="patientsList_sessions" ng-show="patient.active">
-            {{patient.sessions_details|json}}
+           
+            <ul ng-repeat="session in patient.sessions_details">
+                <li><strong>AMO :</strong> {{session.amo}}</li>
+                <li><strong>Titulaire :</strong> {{session.holder}} ({{session.percentage}}%)</li>
+                <li ng-repeat="paiement in session.paiements">
+                    <strong>{{paiement.name}} :</strong> {{(paiement.value | number:2)+'€'}}
+                </li>
+                <li><strong>Total payé :</strong> {{(session_total_paid(patient.id,session.id) | number:2 )+'€'}} sur {{(session_total_due(patient.id,session.id) | number:2 )+'€'}}</li>
+            </ul>
         </div>
     </div>
 </div>
+
+
+<pre>{{patients|json}}</pre>

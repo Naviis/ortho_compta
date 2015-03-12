@@ -123,11 +123,16 @@ class Api extends CI_Controller {
                     $current_session->paiements = array();
                     
                     foreach( $paiment_types as $key => $t ){
-                        $current_session->paiements[$key] = 0;
+                        $current_paiement = new stdClass();
+                        $current_paiement->name = $paiment_types[$key];
+                        $current_paiement->value = 0;
+                        array_push($current_session->paiements,$current_paiement);
                     }
 
                     if( !is_null($line->type) ){
-                        $current_session->paiements[(int)$line->type] = (float)$line->value;
+                        $current_paiement = $current_session->paiements[(int)$line->type];
+                        $current_paiement->name = $paiment_types[(int)$line->type];
+                        $current_paiement->value = (float)$line->value;
                     }
 
                     array_push($sessions,$current_session);
@@ -135,7 +140,9 @@ class Api extends CI_Controller {
                 }else{
 
                     if( !is_null($line->type) ){
-                        $current_session->paiements[(int)$line->type] = (float)$line->value;
+                        $current_paiement = $current_session->paiements[(int)$line->type];
+                        $current_paiement->name = $paiment_types[(int)$line->type];
+                        $current_paiement->value = (float)$line->value;
                     }
                 }
 
